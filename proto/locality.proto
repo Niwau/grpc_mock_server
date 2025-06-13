@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package locality;
+
+enum SortField {
+  NAME = 0;
+  ADDRESS = 1;
+  RADIUS = 2;
+  CODE = 3;
+  REGION = 4;
+  CNPJ = 5;
+  RESPONSIBLE = 6;
+  PHONE = 7;
+}
+
+enum SortOrder {
+  ASC = 0;
+  DESC = 1;
+}
+
+message Sort {
+  SortField field = 1;
+  SortOrder order = 2;
+}
+
+message Meta {
+  string created_at = 1;
+  string created_by = 2;
+  string updated_at = 3;
+  string updated_by = 4;
+}
+
+message Locality {
+  string id = 1;
+  string company_id = 2;
+  string name = 3;
+  string address = 4;
+  double latitude = 5;
+  double longitude = 6;
+  optional double radius = 7;
+  optional string code = 8;
+  optional string region = 9;
+  optional string cnpj = 10;
+  optional string responsible = 11;
+  optional string phone = 12;
+  Meta meta = 13;
+}
+
+message LocalityFilter {
+  optional string name = 1;
+  optional string address = 2;
+  optional double radius = 3;
+  optional string search = 4;
+}
+
+message GetLocalitiesRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  repeated Sort sort = 3;
+  LocalityFilter filter = 4;
+}
+
+message CreateLocalityRequest {
+  string name = 1;
+  string address = 2;
+  double latitude = 3;
+  double longitude = 4;
+  optional double radius = 5;
+  optional string code = 6;
+  optional string region = 7;
+  optional string cnpj = 8;
+  optional string responsible = 9;
+  optional string phone = 10;
+}
+
+message CreateLocalityResponse {
+  string id = 1;
+}
+
+message UpdateLocalityRequest {
+  string id = 1;
+  optional string name = 3;
+  optional string address = 4;
+  optional double latitude = 5;
+  optional double longitude = 6;
+  optional double radius = 7;
+  optional string code = 8;
+  optional string region = 9;
+  optional string cnpj = 10;
+  optional string responsible = 11;
+  optional string phone = 12;
+}
+
+message UpdateLocalityResponse {
+  string id = 1;
+}
+
+message DeleteLocalityRequest {
+  string id = 1;
+}
+
+message DeleteLocalityResponse {
+  string id = 1;
+}
+
+service LocalityService {
+  rpc GetLocalities(GetLocalitiesRequest) returns (stream Locality);
+  rpc CreateLocality(CreateLocalityRequest) returns (CreateLocalityResponse);
+  rpc UpdateLocality(UpdateLocalityRequest) returns (UpdateLocalityResponse);
+  rpc DeleteLocality(DeleteLocalityRequest) returns (DeleteLocalityResponse);
+}
+
+
